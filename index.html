@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE THRESHOLD - 1 in 8 Billion</title>
+    <title>CYBER HACK - Şifre Kırma Simülasyonu</title>
     <style>
         body {
-            background-color: #050508;
-            color: #ff0055;
+            background-color: #08070b;
+            color: #00ffcc;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
@@ -17,109 +17,105 @@
             margin: 0;
             overflow: hidden;
         }
-        .container {
-            background: rgba(12, 10, 18, 0.95);
-            border: 2px solid #ff0055;
-            box-shadow: 0 0 35px rgba(255, 0, 85, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1);
-            border-radius: 12px;
+        .arena-box {
+            background: rgba(18, 16, 26, 0.95);
+            border: 2px solid #ff007f;
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.4), inset 0 0 20px rgba(0, 255, 204, 0.2);
+            border-radius: 15px;
             padding: 30px;
             text-align: center;
-            max-width: 450px;
+            max-width: 420px;
             width: 100%;
         }
         h1 {
-            color: #00f3ff;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+            color: #ff007f;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
             margin-bottom: 5px;
-            font-size: 22px;
-            letter-spacing: 3px;
+            font-size: 26px;
+            letter-spacing: 2px;
         }
-        .stats {
+        .stats-bar {
             display: flex;
             justify-content: space-between;
             margin: 15px 0;
-            font-size: 14px;
-            color: #888;
+            font-size: 15px;
+            font-weight: bold;
+            color: #00ffcc;
         }
-        .stats span {
-            color: #fff;
-        }
-        .game-track {
-            position: relative;
-            height: 180px;
-            background: #0f0d16;
-            border: 1px solid #332244;
-            border-radius: 8px;
+        .pad-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             margin: 20px 0;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        #runner {
-            position: absolute;
-            left: 50px;
-            font-size: 30px;
-            transition: bottom 0.1s ease;
-            filter: drop-shadow(0 0 8px #00f3ff);
+        .pad-btn {
+            background-color: #1a1625;
+            border: 2px solid #00ffcc;
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            padding: 25px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+            transition: all 0.1s ease;
         }
-        .obstacle {
-            position: absolute;
-            right: -40px;
-            font-size: 24px;
+        .pad-btn:active, .pad-btn.aktif {
+            transform: scale(0.94);
+            background-color: #ff007f;
+            border-color: #fff;
+            box-shadow: 0 0 20px #ff007f;
         }
-        .story-box {
-            background: #09080d;
-            border-left: 3px solid #ff0055;
-            padding: 12px;
-            margin: 15px 0;
-            text-align: left;
-            font-size: 13px;
-            color: #ddd;
-            min-height: 70px;
-            line-height: 1.4;
+        #status-msg {
+            margin-top: 15px;
+            font-size: 14px;
+            min-height: 25px;
+            color: #00ffcc;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
         }
-        .btn {
+        .btn-basla {
             background: transparent;
-            border: 2px solid #00f3ff;
-            color: #00f3ff;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
             padding: 12px 25px;
             font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             border-radius: 6px;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
             transition: 0.2s;
             margin-top: 10px;
         }
-        .btn:hover {
-            background: #00f3ff;
-            color: #050508;
-            box-shadow: 0 0 20px #00f3ff;
+        .btn-basla:hover {
+            background: #00ffcc;
+            color: #08070b;
+            box-shadow: 0 0 20px #00ffcc;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>THE THRESHOLD</h1>
-        <p style="font-size: 11px; color: #555; margin: 0;">8 Milyarda Karşı Tek Bir Hayat</p>
-
-        <div class="stats">
-            <span>HAYATTA KALMA: <span id="score">0m</span></span>
-            <span>KURBAN: <span id="victim-id" style="color: #ff0055;">#01</span></span>
+    <div class="arena-box">
+        <h1>CYBER HACK</h1>
+        <p style="font-size: 12px; color: #888; margin-top: 0;">Güvenlik Duvarını Kaldır & Şifreyi Çöz</p>
+        
+        <div class="stats-bar">
+            <span>BÖLÜM: <span id="stage-text" style="color: #ff007f;">1</span> / 3</span>
+            <span>HATA: <span id="error-text">0</span>/3</span>
         </div>
 
-        <div class="game-track" id="track" onclick="zipla()">
-            <div id="runner" style="bottom: 20px;">🧍</div>
-            <div id="instruction" style="position: absolute; color: #444; font-size: 12px;">Zıplamak için ekrana dokun!</div>
+        <!-- Hack Paneli (4 Renkli/Noktalı Siber Tuş) -->
+        <div class="pad-grid" id="game-pad">
+            <button class="pad-btn" onclick="oyuncuTikla(0)" data-index="0" style="border-color: #00ffcc;">1</button>
+            <button class="pad-btn" onclick="oyuncuTikla(1)" data-index="1" style="border-color: #ff007f;">2</button>
+            <button class="pad-btn" onclick="oyuncuTikla(2)" data-index="2" style="border-color: #9400d3;">3</button>
+            <button class="pad-btn" onclick="oyuncuTikla(3)" data-index="3" style="border-color: #ffaa00;">4</button>
         </div>
 
-        <div class="story-box" id="story-display">
-            Sistem başlatılıyor... Karakterin yüklenmesi bekleniyor.
-        </div>
+        <div id="status-msg">Sistemi başlatmak için butona bas!</div>
 
-        <button class="btn" id="action-btn" onclick="oyunuBaslat()">SİMÜLASYONU BAŞLAT</button>
+        <button class="btn-basla" id="action-btn" onclick="oyunuBaslat()">SİSTEMİ HACKLE</button>
     </div>
 
     <script>
@@ -128,149 +124,144 @@
         function sesCal(tur) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
 
-            if (tur === 'ziplama') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-            } else if (tur === 'olum') {
-                // Sinir bozucu, vicdan sızlatan kalın hata ve çöküş sesi
+            if (tur === 'hata') {
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.6);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (tur === 'tik') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } else if (tur === 'basari') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
             }
         }
 
-        // 1 in 8 Billion Tarzı Sarsıcı ve Çelişkili Hikayeler Havuzu
-        const hikayeler = [
-            {
-                id: "#4891",
-                metin: "Kaan, 24 yaşında. Kredi kartı borçlarını ödeyebilmek için üç gündür uyumadan gece vardiyasında çalışıyordu. Dalgınlığına geldi, karşıdan gelen tramvayı görmedi bile. Geriye sadece yarı içilmiş soğuk bir kahve ve 'halledeceğim' mesajı kaldı."
-            },
-            {
-                id: "#7210",
-                metin: "Leyla, 31 yaşında. Mahalledeki sokak kedilerini beslemekten kendi kirasını unutan biriydi. 'Biri beni nasıl olsa görür' inancıyla yaşarken, en karanlık sokakta yalnız başına, kimsesizler mezarlığına doğru bir bilet aldı."
-            },
-            {
-                id: "#1045",
-                netin: "Mert, 19 yaşında. Babasının baskısından kaçmak için sabaha karşı evden kaçmıştı. Tek hayali sahil kenarında küçük bir plak dükkanı açmaktı. Hırsından gözü dönmüştü, kuralları hiçe saydı ve ilk virajda duvara çakıldı."
-            },
-            {
-                id: "#9322",
-                metin: "Selin, 27 yaşında. Herkesin derdini dinleyen ama kendi acısını içine gömen o 'güçlü' arkadaş. İnsanlara yardım etmekten kendi hayatını kurmaya asla vakit bulamadı. Sistem onu sadece bir istatistik olarak kaydetti."
-            },
-            {
-                id: "#3318",
-                metin: "Emre, 35 yaşında. İnsanları dolandırarak elde ettiği parayla lüks içinde yaşarken, bir gece 'nasıl olsa bana bir şey olmaz' kibriyle yolun ortasında durdu. Kimse arkasından ağlamadı; aksine dolandırılanlar rahat bir nefes aldı."
-            }
-        ];
-
+        let bolum = 1;
+        let hatalar = 0;
+        let hedefDizi = [];
+        let oyuncuDizi = [];
         let oyunAktif = false;
-        let skor = 0;
-        let zipliyor = false;
-        let runnerBottom = 20;
-        let engelKonum = 450;
-        let oyunDongusu;
-        let kurbanIndex = 0;
 
         function oyunuBaslat() {
+            hatalar = 0;
+            bolum = 1;
+            document.getElementById('error-text').textContent = hatalar;
+            document.getElementById('stage-text').textContent = bolum;
             document.getElementById('action-btn').style.display = 'none';
-            document.getElementById('instruction').style.display = 'none';
-            skor = 0;
-            kurbanIndex = Math.floor(Math.random() * hikayeler.length);
-            guncelleHikaye();
-            oyunAktif = true;
-             engelKonum = 450;
-            
-            oyunDongusu = setInterval(anaDongu, 20);
+            yeniBolumKur();
         }
 
-        function guncelleHikaye() {
-            const h = hikayeler[kurbanIndex];
-            document.getElementById('victim-id').textContent = h.id;
-            document.getElementById('story-display').innerHTML = `<b>Kurban ${h.id}:</b> ${h.metin}`;
-        }
-
-        function zipla() {
-            if (!oyunAktif || zipliyor) return;
-            zipliyor = true;
-            sesCal('ziplama');
-            
-            let yukselis = setInterval(() => {
-                if (runnerBottom < 100) {
-                    runnerBottom += 12;
-                    document.getElementById('runner').style.bottom = runnerBottom + 'px';
-                } else {
-                    clearInterval(yukselis);
-                    let dusus = setInterval(() => {
-                        if (runnerBottom > 20) {
-                            runnerBottom -= 12;
-                            document.getElementById('runner').style.bottom = runnerBottom + 'px';
-                        } else {
-                            clearInterval(dusus);
-                            zipliyor = false;
-                        }
-                    }, 20);
-                }
-            }, 20);
-        }
-
-        function anaDongu() {
-            skor += 1;
-            document.getElementById('score').textContent = skor + 'm';
-
-            engelKonum -= 6;
-            let engel = document.getElementById('obs');
-            
-            // Eğer engel yoksa oluştur
-            if (!engel) {
-                const track = document.getElementById('track');
-                const yeniEngel = document.createElement('div');
-                yeniEngel.id = 'obs';
-                yeniEngel.className = 'obstacle';
-                yeniEngel.style.right = '0px';
-                yeniEngel.style.bottom = '20px';
-                yeniEngel.textContent = Math.random() > 0.5 ? '⚡' : '🧱';
-                track.appendChild(yeniEngel);
-                engelKonum = 420;
-            } else {
-                engel.style.right = (450 - engelKonum) + 'px';
-            }
-
-            // Çarpışma Testi
-            if (engelKonum < 90 && engelKonum > 40 && runnerBottom < 50) {
-                oldur();
-            }
-
-            if (engelKonum < -40) {
-                if (engel) engel.remove();
-            }
-        }
-
-        function oldur() {
-            clearInterval(oyunDongusu);
+        function yeniBolumKur() {
+            oyuncuDizi = [];
+            hedefDizi = [];
             oyunAktif = false;
-            sesCal('olum');
-
-            const engel = document.getElementById('obs');
-            if (engel) engel.remove();
-
-            const h = hikayeler[kurbanIndex];
-            document.getElementById('story-display').innerHTML = `<span style="color:#ff0055;">[SİSTEM ÇÖKTÜ - ÖLÜM]</span><br><b>${h.id} numaralı hayat son buldu.</b><br>${h.metin}`;
-            document.getElementById('action-btn').textContent = 'BAŞKA BİR HAYATI HARCA';
-            document.getElementById('action-btn').style.display = 'inline-block';
             
-            // Sonraki kurbana geç
-            kurbanIndex = (kurbanIndex + 1) % hikayeler.length;
+            // Bölüme göre şifre uzunluğu (Bölüm 1: 3 adım, Bölüm 2: 4 adım, Bölüm 3: 5 adım)
+            let uzunluk = bolum + 2;
+            for (let i = 0; i < uzunluk; i++) {
+                hedefDizi.push(Math.floor(Math.random() * 4));
+            }
+
+            document.getElementById('status-msg').textContent = `Bölüm ${bolum}: Şifre dizilimi yükleniyor... İzle!`;
+            document.getElementById('status-msg').style.color = '#ffaa00';
+
+            setTimeout(sifreyiGoster, 1000);
+        }
+
+        function sifreyiGoster() {
+            let i = 0;
+            let interval = setInterval(() => {
+                if (i < hedefDizi.length) {
+                    let butonIndex = hedefDizi[i];
+                    tusIsiltiVer(butonIndex);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        oyunAktif = true;
+                        document.getElementById('status-msg').textContent = 'Sıra sende! Şifreyi aynı sırayla gir.';
+                        document.getElementById('status-msg').style.color = '#00ffcc';
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function tusIsiltiVer(index) {
+            const tuslar = document.querySelectorAll('.pad-btn');
+            const tus = tuslar[index];
+            tus.classList.add('aktif');
+            sesCal('tik');
+            setTimeout(() => {
+                tus.classList.remove('aktif');
+            }, 400);
+        }
+
+        function oyuncuTikla(index) {
+            if (!oyunAktif) return;
+
+            tusIsiltiVer(index);
+            oyuncuDizi.push(index);
+
+            let mevcutAdim = oyuncuDizi.length - 1;
+
+            // Yanlış tuşa basıldı mı kontrol et
+            if (oyuncuDizi[mevcutAdim] !== hedefDizi[mevcutAdim]) {
+                hatalar++;
+                document.getElementById('error-text').textContent = hatalar;
+                sesCal('hata');
+                document.getElementById('status-msg').textContent = 'HATA! Yanlış kod bloğu!';
+                document.getElementById('status-msg').style.color = '#ff007f';
+                oyunAktif = false;
+
+                if (hatalar >= 3) {
+                    setTimeout(() => {
+                        document.getElementById('status-msg').textContent = 'SİSTEM KİLİTLENDİ! (Oyun bitti)';
+                        document.getElementById('action-btn').textContent = 'TEKRAR DENE';
+                        document.getElementById('action-btn').style.display = 'inline-block';
+                    }, 500);
+                } else {
+                    setTimeout(sifreyiGoster, 1200); // Aynı bölümü tekrar dene
+                }
+                return;
+            }
+
+            // Bölüm tamamlandı mı?
+            if (oyuncuDizi.length === hedefDizi.length) {
+                oyunAktif = false;
+                sesCal('basari');
+                
+                if (bolum < 3) {
+                    bolum++;
+                    document.getElementById('stage-text').textContent = bolum;
+                    document.getElementById('status-msg').textContent = `Bölüm ${bolum-1} Hacklendi! Sonraki aşamaya geçiliyor...`;
+                    document.getElementById('status-msg').style.color = '#00ffcc';
+                    setTimeout(yeniBolumKur, 1500);
+                } else {
+                    document.getElementById('status-msg').textContent = 'TEBRİKLER! TÜM GÜVENLİK DUVARLARI AŞILDI! 🚀';
+                    document.getElementById('status-msg').style.color = '#00ffcc';
+                    document.getElementById('action-btn').textContent = 'YENİDEN BAŞLAT';
+                    document.getElementById('action-btn').style.display = 'inline-block';
+                }
+            }
         }
     </script>
 </body>
