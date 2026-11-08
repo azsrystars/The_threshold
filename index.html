@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE THRESHOLD - 1 in 8 Billion</title>
+    <style>
+        body {
+            background-color: #050508;
+            color: #ff0055;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(12, 10, 18, 0.95);
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 35px rgba(255, 0, 85, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        h1 {
+            color: #00f3ff;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+            margin-bottom: 5px;
+            font-size: 22px;
+            letter-spacing: 3px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #888;
+        }
+        .stats span {
+            color: #fff;
+        }
+        .game-track {
+            position: relative;
+            height: 180px;
+            background: #0f0d16;
+            border: 1px solid #332244;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #runner {
+            position: absolute;
+            left: 50px;
+            font-size: 30px;
+            transition: bottom 0.1s ease;
+            filter: drop-shadow(0 0 8px #00f3ff);
+        }
+        .obstacle {
+            position: absolute;
+            right: -40px;
+            font-size: 24px;
+        }
+        .story-box {
+            background: #09080d;
+            border-left: 3px solid #ff0055;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 13px;
+            color: #ddd;
+            min-height: 70px;
+            line-height: 1.4;
+        }
+        .btn {
+            background: transparent;
+            border: 2px solid #00f3ff;
+            color: #00f3ff;
+            padding: 12px 25px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #00f3ff;
+            color: #050508;
+            box-shadow: 0 0 20px #00f3ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>THE THRESHOLD</h1>
+        <p style="font-size: 11px; color: #555; margin: 0;">8 Milyarda Karşı Tek Bir Hayat</p>
+
+        <div class="stats">
+            <span>HAYATTA KALMA: <span id="score">0m</span></span>
+            <span>KURBAN: <span id="victim-id" style="color: #ff0055;">#01</span></span>
+        </div>
+
+        <div class="game-track" id="track" onclick="zipla()">
+            <div id="runner" style="bottom: 20px;">🧍</div>
+            <div id="instruction" style="position: absolute; color: #444; font-size: 12px;">Zıplamak için ekrana dokun!</div>
+        </div>
+
+        <div class="story-box" id="story-display">
+            Sistem başlatılıyor... Karakterin yüklenmesi bekleniyor.
+        </div>
+
+        <button class="btn" id="action-btn" onclick="oyunuBaslat()">SİMÜLASYONU BAŞLAT</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function sesCal(tur) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (tur === 'ziplama') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+            } else if (tur === 'olum') {
+                // Sinir bozucu, vicdan sızlatan kalın hata ve çöküş sesi
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.6);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+            }
+        }
+
+        // 1 in 8 Billion Tarzı Sarsıcı ve Çelişkili Hikayeler Havuzu
+        const hikayeler = [
+            {
+                id: "#4891",
+                metin: "Kaan, 24 yaşında. Kredi kartı borçlarını ödeyebilmek için üç gündür uyumadan gece vardiyasında çalışıyordu. Dalgınlığına geldi, karşıdan gelen tramvayı görmedi bile. Geriye sadece yarı içilmiş soğuk bir kahve ve 'halledeceğim' mesajı kaldı."
+            },
+            {
+                id: "#7210",
+                metin: "Leyla, 31 yaşında. Mahalledeki sokak kedilerini beslemekten kendi kirasını unutan biriydi. 'Biri beni nasıl olsa görür' inancıyla yaşarken, en karanlık sokakta yalnız başına, kimsesizler mezarlığına doğru bir bilet aldı."
+            },
+            {
+                id: "#1045",
+                netin: "Mert, 19 yaşında. Babasının baskısından kaçmak için sabaha karşı evden kaçmıştı. Tek hayali sahil kenarında küçük bir plak dükkanı açmaktı. Hırsından gözü dönmüştü, kuralları hiçe saydı ve ilk virajda duvara çakıldı."
+            },
+            {
+                id: "#9322",
+                metin: "Selin, 27 yaşında. Herkesin derdini dinleyen ama kendi acısını içine gömen o 'güçlü' arkadaş. İnsanlara yardım etmekten kendi hayatını kurmaya asla vakit bulamadı. Sistem onu sadece bir istatistik olarak kaydetti."
+            },
+            {
+                id: "#3318",
+                metin: "Emre, 35 yaşında. İnsanları dolandırarak elde ettiği parayla lüks içinde yaşarken, bir gece 'nasıl olsa bana bir şey olmaz' kibriyle yolun ortasında durdu. Kimse arkasından ağlamadı; aksine dolandırılanlar rahat bir nefes aldı."
+            }
+        ];
+
+        let oyunAktif = false;
+        let skor = 0;
+        let zipliyor = false;
+        let runnerBottom = 20;
+        let engelKonum = 450;
+        let oyunDongusu;
+        let kurbanIndex = 0;
+
+        function oyunuBaslat() {
+            document.getElementById('action-btn').style.display = 'none';
+            document.getElementById('instruction').style.display = 'none';
+            skor = 0;
+            kurbanIndex = Math.floor(Math.random() * hikayeler.length);
+            guncelleHikaye();
+            oyunAktif = true;
+             engelKonum = 450;
+            
+            oyunDongusu = setInterval(anaDongu, 20);
+        }
+
+        function guncelleHikaye() {
+            const h = hikayeler[kurbanIndex];
+            document.getElementById('victim-id').textContent = h.id;
+            document.getElementById('story-display').innerHTML = `<b>Kurban ${h.id}:</b> ${h.metin}`;
+        }
+
+        function zipla() {
+            if (!oyunAktif || zipliyor) return;
+            zipliyor = true;
+            sesCal('ziplama');
+            
+            let yukselis = setInterval(() => {
+                if (runnerBottom < 100) {
+                    runnerBottom += 12;
+                    document.getElementById('runner').style.bottom = runnerBottom + 'px';
+                } else {
+                    clearInterval(yukselis);
+                    let dusus = setInterval(() => {
+                        if (runnerBottom > 20) {
+                            runnerBottom -= 12;
+                            document.getElementById('runner').style.bottom = runnerBottom + 'px';
+                        } else {
+                            clearInterval(dusus);
+                            zipliyor = false;
+                        }
+                    }, 20);
+                }
+            }, 20);
+        }
+
+        function anaDongu() {
+            skor += 1;
+            document.getElementById('score').textContent = skor + 'm';
+
+            engelKonum -= 6;
+            let engel = document.getElementById('obs');
+            
+            // Eğer engel yoksa oluştur
+            if (!engel) {
+                const track = document.getElementById('track');
+                const yeniEngel = document.createElement('div');
+                yeniEngel.id = 'obs';
+                yeniEngel.className = 'obstacle';
+                yeniEngel.style.right = '0px';
+                yeniEngel.style.bottom = '20px';
+                yeniEngel.textContent = Math.random() > 0.5 ? '⚡' : '🧱';
+                track.appendChild(yeniEngel);
+                engelKonum = 420;
+            } else {
+                engel.style.right = (450 - engelKonum) + 'px';
+            }
+
+            // Çarpışma Testi
+            if (engelKonum < 90 && engelKonum > 40 && runnerBottom < 50) {
+                oldur();
+            }
+
+            if (engelKonum < -40) {
+                if (engel) engel.remove();
+            }
+        }
+
+        function oldur() {
+            clearInterval(oyunDongusu);
+            oyunAktif = false;
+            sesCal('olum');
+
+            const engel = document.getElementById('obs');
+            if (engel) engel.remove();
+
+            const h = hikayeler[kurbanIndex];
+            document.getElementById('story-display').innerHTML = `<span style="color:#ff0055;">[SİSTEM ÇÖKTÜ - ÖLÜM]</span><br><b>${h.id} numaralı hayat son buldu.</b><br>${h.metin}`;
+            document.getElementById('action-btn').textContent = 'BAŞKA BİR HAYATI HARCA';
+            document.getElementById('action-btn').style.display = 'inline-block';
+            
+            // Sonraki kurbana geç
+            kurbanIndex = (kurbanIndex + 1) % hikayeler.length;
+        }
+    </script>
+</body>
+</html>
