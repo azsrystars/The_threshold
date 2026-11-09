@@ -188,7 +188,6 @@
             }
         }
 
-        // 35 Adet Sarsıcı Gerçek Hayat Hikayesi
         const hikayelerHavuzu = [
             { id: "#4891", metin: "Kaan, 24 yaşında. Kredi kartı borçlarını ödeyebilmek için üç gündür uyumadan çalışıyordu. Dalgınlığına geldi, karşıdan gelen tramvayı görmedi bile. Geriye yarı içilmiş soğuk bir kahvesi kaldı." },
             { id: "#7210", metin: "Leyla, 31 yaşında. Mahalledeki sokak kedilerini beslemekten kendi kirasını unutan biriydi. 'Biri beni nasıl olsa görür' inancıyla yaşarken, en karanlık sokakta kimsesizler mezarlığına doğru yalnız yürüdü." },
@@ -236,7 +235,6 @@
         let aktifHikaye;
         let currentIndex = 0;
 
-        // --- ECG / Nabız Çizim Mantığı ---
         const canvas = document.getElementById('ecg-canvas');
         const ctx = canvas.getContext('2d');
         let ecgOffset = 0;
@@ -302,14 +300,14 @@
             sesCal('ziplama');
             
             let yukselis = setInterval(() => {
-                if (runnerBottom < 140) {
-                    runnerBottom += 16;
+                if (runnerBottom < 145) {
+                    runnerBottom += 22;
                     document.getElementById('runner').style.bottom = runnerBottom + 'px';
                 } else {
                     clearInterval(yukselis);
                     let dusus = setInterval(() => {
                         if (runnerBottom > 25) {
-                            runnerBottom -= 16;
+                            runnerBottom -= 22;
                             document.getElementById('runner').style.bottom = runnerBottom + 'px';
                         } else {
                             clearInterval(dusus);
@@ -317,9 +315,9 @@
                             document.getElementById('runner').style.bottom = '25px';
                             zipliyor = false;
                         }
-                    }, 12);
+                    }, 10);
                 }
-            }, 12);
+            }, 10);
         }
 
         function anaDongu() {
@@ -342,9 +340,9 @@
                 engel.style.right = (480 - engelKonum) + 'px';
             }
 
-            // DÜZELTİLDİ: Hitbox eşiği 55'ten 42'ye düşürüldü. 
-            // Artık karakter zıpladığı an (42px ve üzerine çıktığı an) engelin üzerinden güvenle geçecek!
-            if (engelKonum < 80 && engelKonum > 40 && runnerBottom < 42) {
+            // KESİN ÇÖZÜM: Hitbox aralığı sadece oyuncunun tam altındayken (engelKonum 45 ile 60 arasında) çalışır.
+            // Engel oyuncunun arkasına (soluna, < 45) geçtiği an, yere iniyor olsan bile ölüm gerçekleşmez!
+            if (engelKonum <= 60 && engelKonum >= 45 && runnerBottom < 35) {
                 oldur();
             }
 
