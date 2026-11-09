@@ -42,7 +42,6 @@
             font-size: 20px;
             letter-spacing: 2px;
         }
-        /* Among Us tarzı Canlı Nabız / ECG Monitörü */
         .ecg-monitor {
             background: #000;
             border: 1px solid #ff3355;
@@ -66,7 +65,6 @@
         .stats span {
             color: #fff;
         }
-        /* Ferah ve yüksek oyun alanı (Kafa çarpma sorunu yok) */
         .game-track {
             position: relative;
             height: 280px;
@@ -138,7 +136,6 @@
     <div class="container">
         <div class="header-row">
             <h1>THRESHOLD</h1>
-            <!-- Canlı Nabız Takip Ekranı -->
             <div class="ecg-monitor" title="Canlı Yaşam Sinyali">
                 <canvas id="ecg-canvas" width="110" height="35"></canvas>
             </div>
@@ -266,7 +263,6 @@
             if (canliMi) ecgOffset += 2;
         }
 
-        // Sabit nabız animasyon döngüsü
         setInterval(() => {
             cizNabiz(oyunAktif);
         }, 40);
@@ -306,7 +302,7 @@
             sesCal('ziplama');
             
             let yukselis = setInterval(() => {
-                if (runnerBottom < 140) { // Güvenli tavan mesafesi (280px kutu içinde kafa vurma riski sıfır)
+                if (runnerBottom < 140) {
                     runnerBottom += 16;
                     document.getElementById('runner').style.bottom = runnerBottom + 'px';
                 } else {
@@ -341,13 +337,14 @@
                 yeniEngel.style.right = '0px';
                 yeniEngel.textContent = Math.random() > 0.4 ? '⚠️' : '💥';
                 trackElement.appendChild(yeniEngel);
-                engelKonum = 450;
+                engelKonum = 480;
             } else {
                 engel.style.right = (480 - engelKonum) + 'px';
             }
 
-            // Çarpışma Testi
-            if (engelKonum < 85 && engelKonum > 35 && runnerBottom < 55) {
+            // DÜZELTİLDİ: Hitbox eşiği 55'ten 42'ye düşürüldü. 
+            // Artık karakter zıpladığı an (42px ve üzerine çıktığı an) engelin üzerinden güvenle geçecek!
+            if (engelKonum < 80 && engelKonum > 40 && runnerBottom < 42) {
                 oldur();
             }
 
@@ -358,7 +355,7 @@
 
         function oldur() {
             clearInterval(oyunDongusu);
-            oyunAktif = false; // Bu sayede sağ üstteki ECG ekranı anında düz çizgiye (flatline) dönüşür
+            oyunAktif = false;
             sesCal('olum');
 
             const engel = document.getElementById('obs');
